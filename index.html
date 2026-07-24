@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>紐西蘭米其林餐廳儀表板 2026 — 奧克蘭・皇后鎮・基督城</title>
+<meta name="description" content="可排序、可篩選的比較儀表板，涵蓋2026米其林指南紐西蘭版在奧克蘭、皇后鎮、基督城的全部88間餐廳（二星、一星、必比登、精選），並標註NT$5,000以內的平價選擇。" />
+<meta property="og:title" content="紐西蘭米其林餐廳儀表板 2026" />
+<meta property="og:description" content="奧克蘭、皇后鎮、基督城88間米其林餐廳一次比較，內建NT$5,000預算篩選。" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@500,600,700&f[]=satoshi@400,500,600,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+
+<!-- Favicon: inline SVG fern/star mark -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%23163832'/%3E%3Cpath d='M16 6 L19 16 L29 19 L19 22 L16 32 L13 22 L3 19 L13 16 Z' fill='white' opacity='0.95'/%3E%3C/svg%3E" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-label="MICHELIN star mark">
+        <path d="M16 6 L19 16 L29 19 L19 22 L16 32 L13 22 L3 19 L13 16 Z" fill="currentColor" opacity="0.95"/>
+      </svg>
+      <div class="brand-text">
+        <h1>紐西蘭米其林餐廳儀表板</h1>
+        <p>2026米其林指南紐西蘭版 · 奧克蘭・皇后鎮・基督城 88間餐廳</p>
+      </div>
+    </div>
+    <button class="theme-toggle" data-theme-toggle aria-label="切換主題"></button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-eyebrow"><span class="dot"></span>2026米其林指南紐西蘭版 · 2026年6月30日公布</div>
+      <h2>紐西蘭米其林餐廳，依預算一次篩選。</h2>
+      <p class="lede">涵蓋奧克蘭（北島）、皇后鎮與基督城（南島）三個城市共88間餐廳——二星、一星、必比登、精選一次比較，並以新台幣5,000元／人為預算線標註是否符合。</p>
+
+      <div class="callout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <p><strong>大多數餐廳都在預算內。</strong>紐西蘭全國唯一的二星餐廳Essence（皇后鎮）與Amisfield的品嚐套餐價位偏高，明顯超出NT$5,000；但全部31間必比登、以及大多數精選與一星餐廳，換算後每人都落在NT$5,000以內。換算匯率以2026年7月NZ$1≈NT$18.25估算，實際價位請以訂位當下為準。</p>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-value" id="kpiCount">–</div><div class="kpi-label">餐廳總數</div></div>
+        <div class="kpi-card"><div class="kpi-value" id="kpiWithin">–</div><div class="kpi-label">NT$5,000以內</div></div>
+        <div class="kpi-card"><div class="kpi-value" id="kpiCities">–</div><div class="kpi-label">涵蓋城市數</div></div>
+        <div class="kpi-card"><div class="kpi-value" id="kpiTiers">–</div><div class="kpi-label">等級分類數</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="charts-section">
+    <div class="wrap">
+      <div class="section-title">餐飲版圖概覽</div>
+      <div class="section-sub">各城市的等級分布，以及預算內外餐廳的比例。</div>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>各城市餐廳數（依等級堆疊）</h3>
+          <canvas id="cityTierChart"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>NT$5,000預算內 vs. 超出預算</h3>
+          <canvas id="budgetChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="filters-section">
+    <div class="wrap">
+      <div class="filters-bar">
+        <div class="filter-group">
+          <label>城市</label>
+          <div class="chip-row" id="cityChips"></div>
+        </div>
+        <div class="filter-group">
+          <label>等級</label>
+          <select class="select-control" id="tierSelect">
+            <option value="all">全部等級</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>預算</label>
+          <select class="select-control" id="budgetSelect">
+            <option value="all">不限預算</option>
+            <option value="within" selected>NT$5,000以內</option>
+          </select>
+        </div>
+        <div class="filter-group grow">
+          <label>搜尋</label>
+          <input class="search-input" id="searchInput" type="text" placeholder="輸入餐廳名稱、主廚或料理類型搜尋…" />
+        </div>
+        <button class="reset-btn" id="resetBtn">重設篩選</button>
+      </div>
+      <div class="result-count-row">
+        <div class="result-count" id="resultCount"></div>
+        <div class="scroll-hint">左右滑動表格可查看所有欄位 →</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="table-section">
+    <div class="wrap">
+      <div class="table-scroll">
+        <table class="dash-table">
+          <thead id="tableHead"></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>資料整理自2026米其林指南紐西蘭版官方公布內容（2026年6月30日）、各餐廳官方網站／訂位系統，以及1News、NZ Herald、The Press、Metropol等媒體報導。價位、候補天數與訂位政策會隨季節調整，部分必比登與精選餐廳價位未公開，已於表格中註明「洽詢餐廳」；點擊任一列的ⓘ圖示可查看完整細節。除另有註明外，所有金額皆為新台幣（NT$）每人估計價格，未含服務費，換算匯率約NZ$1＝NT$18.25（2026年7月）。</p>
+    <p>© <span id="year"></span></p>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalBody"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
